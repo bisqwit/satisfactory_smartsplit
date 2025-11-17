@@ -68,6 +68,56 @@ The cache file is typically found in:
 * Win XP: `C:\Documents and Settings\<username>\Local Settings\Application Data\bisqwit\smartsplit\Cache`
 * Vista: `C:\Users\<username>\AppData\Local\bisqwit\smartsplit\Cache`
 
+## Algorithm
+
+* Is the number of goals $n=0$? If so, output zero and quit.
+* Is the number of goals $n=1$? If so, pass input directly into output and quit.
+* Can the goals be divided into 2 or 3 groups that have exactly the same sum? If so, use a single divider to create 2 or 3 goals.
+Recursively solve these independent goals, and then quit.
+* Can we find a single real number (greatest common divisor) $M\in\mathbb{R}$
+such that every goal $G_i \in \mathbb{R}$ can be expressed as $N_i\cdot M$
+for some $N_i\in\mathbb{N},\ N_i\le 10$?
+If so, split goal $G_i$ into $N_i$ new goals of $M$,
+and recursively solve these new goals.
+If a solution is found, reconstitute the original goals $G_i$
+by merging $N_i$ instances of $M$-valued outputs together
+and use this as a solution.
+* Is the number _not_ divisible by some $Q \in \\{3,\\,2,\\,6\\}$?
+If so, calculate a _miss_ value $M$ such that
+$M+\sum G = Q\lfloor\frac{M+\sum G}{Q}\rfloor$,
+or $M=Q-(\sum G\mod Q)$,
+and create a new group of goals $G \cup \\{M\\}$
+and recursively solve this new group.
+If a solution is found, create a merge between the original input
+and one of the $M$-valued outputs, pass the result of this merge
+as the input to the subsolution, and use this as a solution.
+* Is there a way to split the goals into 2 groups $A$ and $B$
+such that
+$A = \left( G_0 \dots G_{i-1},\\,\alpha\cdot G_i \right)$,
+$B = \left( (1-\alpha)\cdot G_i,\\,G_{i+1}\cdot G_{n-1} \right)$,
+and $\sum A + \sum B = \sum G$? (Yes, it always is if $n\ge 2$.)
+If so, create a single divider to create two groups $A$ and $B$,
+and recursively solve both groups.
+Then take one of the outputs valued $(1-\alpha)\cdot G_i$,
+one of the outputs valued $\alpha\cdot G_i$, and merge them together to
+form the original $G_i$, and use this as a solution.
+* Is there a way to split the goals into _three_ groups $A$, $B$ and $C$,
+such that
+$A = \left( G_0 \dots G_{i-1},\\,\alpha\cdot G_i \right)$,
+$B = \left( (1-\alpha)\cdot G_i,\\,G_{i+1}\cdot G_{j-1},\\,\beta\cdot G_j \right)$,
+and
+$C = \left( (1-\beta)\cdot G_j,\\,G_{j+1}\cdot G_{n-1} \right)$,
+and $\sum A+\sum B+\sum C=\sum G$? (Not always possible.)
+If so, create a single divider to create three groups $A$, $B$ and $C$,
+and recursively solve all three.
+Then take one of the outputs valued $\alpha\cdot G_i$,
+one of the outputs valued $(1-\alpha)\cdot _i$,
+and merge them together to form the original $G_i$;
+likewise take one of the outputs valued $\beta\cdot G_j$,
+one of the outputs valued $(1-\beta)\cdot G_j$,
+and merge them together to form the original $G_j$,
+and use this as a solution.
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
@@ -79,5 +129,7 @@ whose splitter source code I read for ideas.
 His splitter has more features (such as taking into account different tool belt speeds),
 but my tool produces chains with fewer nodes.
 
-OpenAI’s ChatGPT was used to write portions of the code.
+OpenAI’s ChatGPT was used to write portions of the code,
+particularly the files `cut3.py` and `partition.py`.
+
 
