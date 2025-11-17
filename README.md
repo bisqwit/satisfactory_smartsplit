@@ -111,7 +111,7 @@ and $\sum A+\sum B+\sum C=\sum G$? (Not always possible.)
 If so, create a single divider to create three groups $A$, $B$ and $C$,
 and recursively solve all three.
 Then take one of the outputs valued $\alpha\cdot G_i$,
-one of the outputs valued $(1-\alpha)\cdot _i$,
+one of the outputs valued $(1-\alpha)\cdot G_i$,
 and merge them together to form the original $G_i$;
 likewise take one of the outputs valued $\beta\cdot G_j$,
 one of the outputs valued $(1-\beta)\cdot G_j$,
