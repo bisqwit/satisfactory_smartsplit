@@ -390,6 +390,8 @@ if len(sys.argv) == 1:
   print("Usage: python3 smartsplit.py <output> [<...>]")
   sys.exit()
 
+view_graph = True
+
 opt = do_smartsplit(*(float(v) for v in sys.argv[1:]))
 if opt:
   for i,line in enumerate(opt):
@@ -400,15 +402,38 @@ if opt:
     for q in line[2:]:
       feeders[q] += 1
 
-  shapes = {'input':'house','output':'invhouse','merge':'square','split':'diamond','split2':'diamond','split3':'diamond'}
+  shapes = {
+   'input':'house style=filled fillcolor=lightblue',
+   'output':'invhouse style=filled fillcolor=lightgreen',
+   'merge':'square',
+   'split':'diamond','split2':'diamond','split3':'diamond'
+  }
   dot = "graph [splines=spline]\n"
+  dot += "{rank=max;"
   for i,line in enumerate(opt):
-    dot += "node%d [label=\"%g\" shape=%s]\n" % (i, line[0], shapes[line[1]])
+    if opt[i][1] == 'output':
+      dot += "node%d;" % i
+  dot += "}"
+
+  dot += "{rank=min;"
+  for i,line in enumerate(opt):
+    if opt[i][1] == 'input':
+      dot += "node%d;" % i
+  dot += "}"
+  
+  for i,line in enumerate(opt):
+    label = '%g' % line[0]
+    if line[1] == 'merge':
+      label = '%s=%s' % ('+'.join('%g'%v for v in sorted(((opt[q][0]/feeders[q]) for q in line[2:]), reverse=True)), label)
+    elif line[1][:5] == 'split':
+      label = '%s /%d' % (label, feeders[i])
+    
+    dot += "node%d [label=\"%s\" shape=%s]\n" % (i, label, shapes[line[1]])
     for q in line[2:]:
       flow = opt[q][0] / (feeders[q] if feeders[q] else 1)
       dot += "node%d->node%d [label=\"%g\"];\n" % (q, i, flow)
 
-  if True:
+  if view_graph:
     graph = graphviz.Digraph(body=dot)
     graph.view()
   else:

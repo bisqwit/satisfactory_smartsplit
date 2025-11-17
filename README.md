@@ -35,7 +35,18 @@ will receive exactly C items per minute, not less and not more.
 
 ![Graph for 4.5:6.5:3](images/4.5_6.5_3.png)
 
-## Graphviz
+    python3 smartsplit 151 71 5
+
+![Graph for 151:71:5](images/151_71_5.png)
+
+## Dependencies
+
+The following libraries are required: graphviz platformdirs functools fractions pathlib bisect pickle sys os.
+Of these, I believe graphviz and platformdirs need to be separately installed:
+
+``pip3 install -r requirements.txt``
+
+### Graphviz
 
 Output is done with a Graphviz Digraph. From each node, there is an arrow pointing to where it goes.
 When graphing, nodes are displayed in a few different ways depending on what it represents.
@@ -53,3 +64,5 @@ Thanks to [IceMoonMagic](https://github.com/IceMoonMagic/Satisfactory-Splitter-C
 whose splitter source code I read for ideas.
 His splitter has more features (such as taking into account different tool belt speeds),
 but my tool produces chains with fewer nodes.
+
+OpenAI’s ChatGPT was used to write portions of the code.
