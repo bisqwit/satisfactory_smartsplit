@@ -24,9 +24,9 @@ def cached(func):
 
     @wraps(func)
     def wrapper(*args):
-        try:
+        if args in func.cache:
             return func.cache[args]
-        except KeyError:
+        else:
             func.cache[args] = result = func(*args)
             return result   
     return wrapper
