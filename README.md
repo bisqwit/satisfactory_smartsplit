@@ -10,9 +10,10 @@ A+B of these items, you need for your production chain inside that factory.
 The remaining C of them, you need to transport via vehicles to another factory.
 
 If you used a simple splitter, (A+B+C)/3 items would be queued for transport via vehicle.
-Because vehicles transport _everything_ you have available, your local
-factory will be starved and the destination factory will be swamped with
-incoming items  or vice versa.
+Because vehicles transport _everything_ you have available,
+regardless of whether there is room in target for the items or not,
+your local factory will be starved and the destination factory will be swamped with
+incoming items, or vice versa.
 
 Using accurate conveyer splitting, you can ensure that the offshore factory
 will receive exactly C items per minute, not less and not more.
@@ -52,7 +53,20 @@ Output is done with a Graphviz Digraph. From each node, there is an arrow pointi
 When graphing, nodes are displayed in a few different ways depending on what it represents.
 
 Inputs are houses, Outputs are inverted houses, splitters are Diamonds and mergers are Squares.
+
 Currently, a chain of mergers will be condensed into a single merger.
+This gives you liberties with how you want to set up the merges,
+without changing the function of the graph.
+
+## Caching
+
+Caching is used to avoid duplicate computation.
+The cache file is typically found in:
+
+* Mac OS X: `~/Library/Caches/smartsplit/smartsplit.cache`
+* Linux: `~/.cache/smartsplit/smartsplit.cache`
+* Win XP: `C:\Documents and Settings\<username>\Local Settings\Application Data\bisqwit\smartsplit\Cache`
+* Vista: `C:\Users\<username>\AppData\Local\bisqwit\smartsplit\Cache`
 
 ## License
 
@@ -66,3 +80,4 @@ His splitter has more features (such as taking into account different tool belt 
 but my tool produces chains with fewer nodes.
 
 OpenAI’s ChatGPT was used to write portions of the code.
+
